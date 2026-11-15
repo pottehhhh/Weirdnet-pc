@@ -57,6 +57,10 @@ jobs:
         shell: bash
     steps:
       - uses: actions/checkout@v4
+      - name: Unpack project zip (only if the repo holds a zip instead of the files)
+        run: |
+          if [ ! -f gradlew ] && ls *.zip >/dev/null 2>&1; then 7z x -y *.zip -o. > /dev/null; fi
+          ls
       - uses: actions/setup-java@v4
         with: { distribution: temurin, java-version: "21" }
       - uses: gradle/actions/setup-gradle@v4
