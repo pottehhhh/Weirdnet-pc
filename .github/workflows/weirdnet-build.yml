@@ -19,7 +19,7 @@ jobs:
       - name: Point update checker at this repo
         run: sed -i "s#WEIRDNET_GITHUB_REPO#${{ github.repository }}#" shared/src/commonMain/kotlin/dev/cluvex/zedsecure/data/update/UpdateChecker.kt
       - name: Download engines
-        run: ./tools/get-cores.sh android
+        run: bash tools/get-cores.sh android
       - name: Signing key
         env:
           B64: ${{ secrets.WEIRDNET_KEYSTORE_B64 }}
@@ -61,9 +61,9 @@ jobs:
         with: { distribution: temurin, java-version: "21" }
       - uses: gradle/actions/setup-gradle@v4
       - name: Download engines
-        run: ./tools/get-cores.sh windows
+        run: bash tools/get-cores.sh windows
       - name: Build (unsigned)
-        run: ./gradlew --warning-mode all :desktop:createDistributable :desktop:packageMsi
+        run: bash ./gradlew --warning-mode all :desktop:createDistributable :desktop:packageMsi
       - name: Collect
         run: |
           mkdir -p dist
