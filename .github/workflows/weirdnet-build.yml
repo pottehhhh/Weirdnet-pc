@@ -59,8 +59,12 @@ jobs:
       - uses: actions/checkout@v4
       - name: Unpack project zip (only if the repo holds a zip instead of the files)
         run: |
-          if [ ! -f gradlew ] && ls *.zip >/dev/null 2>&1; then 7z x -y *.zip -o. > /dev/null; fi
-          ls
+          echo "--- files in repo:"; ls -la
+          if [ ! -f tools/get-cores.sh ]; then
+            for z in $(ls *.zip 2>/dev/null | sort -V); do echo "unpacking $z"; 7z x -y "$z" -o. > /dev/null; done
+          fi
+          echo "--- after unpack:"; ls
+          test -f tools/get-cores.sh || { echo "::error::tools/get-cores.sh is missing: upload the project zip to the repo root"; exit 1; }
       - uses: actions/setup-java@v4
         with: { distribution: temurin, java-version: "21" }
       - uses: gradle/actions/setup-gradle@v4
