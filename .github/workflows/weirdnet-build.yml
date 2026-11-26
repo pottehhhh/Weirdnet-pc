@@ -61,7 +61,7 @@ jobs:
         run: |
           echo "--- files in repo:"; ls -la
           if [ ! -f tools/get-cores.sh ]; then
-            for z in $(ls *.zip 2>/dev/null | sort -V); do echo "unpacking $z"; 7z x -y "$z" -o. > /dev/null; done
+            ls *.zip 2>/dev/null | sort -V | while IFS= read -r z; do echo "unpacking $z"; 7z x -y "$z" -o. > /dev/null; done
           fi
           echo "--- after unpack:"; ls
           test -f tools/get-cores.sh || { echo "::error::tools/get-cores.sh is missing: upload the project zip to the repo root"; exit 1; }
